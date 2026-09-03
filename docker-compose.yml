@@ -1,0 +1,29 @@
+services:
+  floci:
+    image: floci/floci:latest
+    ports:
+      - "4566:4566"
+    volumes:
+      - ./floci/data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      AWS_DEFAULT_REGION: us-east-1
+      FLOCI_STORAGE_MODE: persistent
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - floci
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
