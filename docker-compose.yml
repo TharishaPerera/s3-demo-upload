@@ -9,6 +9,8 @@ services:
     environment:
       AWS_DEFAULT_REGION: us-east-1
       FLOCI_STORAGE_MODE: persistent
+    networks:
+      - app-network
 
   backend:
     build:
@@ -19,6 +21,8 @@ services:
       - .env
     depends_on:
       - floci
+    networks:
+      - app-network
 
   frontend:
     build:
@@ -27,3 +31,9 @@ services:
       - "5173:5173"
     depends_on:
       - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    name: s3-demo-upload-net
