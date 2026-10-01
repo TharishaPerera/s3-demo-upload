@@ -34,6 +34,18 @@ services:
     networks:
       - app-network
 
+  nginx:
+    image: nginx:1.30.4-alpine3.24
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+      - frontend
+      - floci
+    restart: unless-stopped
+
 networks:
   app-network:
     name: s3-demo-upload-net
